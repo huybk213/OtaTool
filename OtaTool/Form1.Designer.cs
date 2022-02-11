@@ -39,6 +39,7 @@
             this.buttonBrowseFile.Size = new System.Drawing.Size(75, 45);
             this.buttonBrowseFile.TabIndex = 5;
             this.buttonBrowseFile.Text = "Browse file";
+            this.buttonBrowseFile.Click += new System.EventHandler(this.onButtonBrowseFileClock);
             // 
             // textBoxPath
             // 
