@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace OtaTool
 {
@@ -36,10 +37,20 @@ namespace OtaTool
             lastPath += "\\setting.ini";
             Trace.WriteLine("lastPath " + lastPath);
 
+            string configIni;
             if (File.Exists(lastPath))
             {
-                rememberLastDirectory = File.ReadAllText(lastPath);
-                this.textBoxPath.Text = rememberLastDirectory;
+                //rememberLastDirectory = File.ReadAllText(lastPath);
+                configIni = File.ReadAllText(lastPath);
+                var jsonConfig = JsonSerializer.Serialize(configIni).;
+                if (jsonConfig != null)
+                {
+                    if (jsonConfig.root
+                }
+                else
+                {
+                    rememberLastDirectory = Directory.GetCurrentDirectory();
+                }
             }
             else
             {
