@@ -9,14 +9,24 @@ using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Security.Cryptography;
 
 namespace OtaTool
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
     {
-        string rememberLastDirectory;
+        //string config.file;
         string binaryFileName;
-        string lastPath = Directory.GetCurrentDirectory();
+        //string lastPath = Directory.GetCurrentDirectory();
+
+        public class ApplicationConfig
+        {
+            public string directory { get; set; }
+            public string file { get; set; }
+        }
+
+        ApplicationConfig config = new ApplicationConfig();
+
         public Form1()
         {
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
@@ -25,36 +35,51 @@ namespace OtaTool
             Trace.WriteLine("Exiting Main");
             Trace.WriteLine("Application started");
             InitializeComponent();
+            config.directory = Directory.GetCurrentDirectory();
             loadDefaultDirectory();
         }
 
         private void loadDefaultDirectory()
         {
-            if (lastPath.Contains("\\Debug"))
+            if (config.directory.Contains("\\Debug"))
             {
-                lastPath = lastPath.Substring(0, lastPath.LastIndexOf("\\Debug"));
+                config.directory = config.directory.Substring(0, config.directory.LastIndexOf("\\Debug"));
             }
-            lastPath += "\\setting.ini";
-            Trace.WriteLine("lastPath " + lastPath);
+            config.directory += "\\setting.ini";
+            Trace.WriteLine("lastPath " + config.directory);
 
             string configIni;
-            if (File.Exists(lastPath))
+            if (File.Exists(config.directory))
             {
-                //rememberLastDirectory = File.ReadAllText(lastPath);
-                configIni = File.ReadAllText(lastPath);
-                var jsonConfig = JsonSerializer.Serialize(configIni).;
-                if (jsonConfig != null)
+                //config.file = File.ReadAllText(lastPath);
+                configIni = File.ReadAllText(config.directory);
+                try
                 {
-                    if (jsonConfig.root
+                    var jsonConfig = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(configIni);
+                    if (jsonConfig != null)
+                    {
+                        if (jsonConfig.ContainsKey("file"))
+                        {
+                            string file;
+                            jsonConfig.TryGetValue("file", out file);
+                            config.file = file;
+                            this.textBoxPath.Text = file;
+                            Trace.Write("Last file is {0}", config.file);
+                        }
+                    }
+                    else
+                    {
+                        config.file = Directory.GetCurrentDirectory();
+                    }
                 }
-                else
+                catch
                 {
-                    rememberLastDirectory = Directory.GetCurrentDirectory();
+                    File.Delete(config.directory);
                 }
             }
             else
             {
-                rememberLastDirectory = Directory.GetCurrentDirectory();
+                config.file = Directory.GetCurrentDirectory();
             }
         }
 
@@ -84,7 +109,7 @@ namespace OtaTool
 
         private void onButtonBrowseFileClock(object sender, EventArgs e)
         {
-            if (browseFirmwareFile(rememberLastDirectory, ref binaryFileName))
+            if (browseFirmwareFile(config.file, ref binaryFileName))
             {
                 //otaTransfer.state = (byte)otaState_t.OTA_READ_DISK_FILE;
             }
@@ -92,12 +117,42 @@ namespace OtaTool
             if (binaryFileName.Length > 0)
             {
                 this.textBoxPath.Text = binaryFileName;
-                if (!binaryFileName.Contains(rememberLastDirectory))
+                //if (!binaryFileName.Contains(config.file))
                 {
-                    rememberLastDirectory = binaryFileName;
-                    rememberLastDirectory.Substring(rememberLastDirectory.LastIndexOf('\\'));
-                    File.WriteAllText(lastPath, rememberLastDirectory);
-                    Trace.WriteLine("File directory " + rememberLastDirectory);
+                    // Get CRC
+                    var checksum = 0;
+                    string checkSumInString = "0";
+                    if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "SUM") == 0)
+                    {
+                        byte[] firmwareData= File.ReadAllBytes(binaryFileName);
+                        foreach (byte b in firmwareData)
+                        {
+                            checksum += b;
+                        }
+                        checkSumInString = checksum.ToString();
+                        Trace.WriteLine("File sum " + checksum);
+                    }
+                    else if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "MD5") == 0)
+                    {
+                        using (var md5 = MD5.Create())
+                        {
+                            using (var stream = File.OpenRead(binaryFileName))
+                            {
+                                byte[] md5Val = md5.ComputeHash(stream);
+                                checkSumInString = BitConverter.ToString(md5Val);
+                            }
+                        }
+                    }
+                    this.textBoxChecksum.Enabled = true;
+                    this.textBoxChecksum.Text = checkSumInString;
+                    this.textBoxChecksum.Enabled = false;
+                    config.file = binaryFileName;
+                    config.file.Substring(config.file.LastIndexOf('\\'));
+                    string output = JsonSerializer.Serialize<ApplicationConfig>(config);
+
+                    File.WriteAllText(config.directory, output);
+                    // Trace.WriteLine("File directory " + config.file);
+                    Trace.WriteLine(File.ReadAllText(config.directory));
                 }
             }
         }
