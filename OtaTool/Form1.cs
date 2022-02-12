@@ -107,7 +107,12 @@ namespace OtaTool
             return false;
         }
 
-        private void onButtonBrowseFileClock(object sender, EventArgs e)
+        string convert(byte[] a)
+        {
+            return string.Join(" ", a.Select(b => string.Format("{0:X2} ", b)));
+        }
+
+        private void onButtonBrowseFileClick(object sender, EventArgs e)
         {
             if (browseFirmwareFile(config.file, ref binaryFileName))
             {
@@ -139,13 +144,13 @@ namespace OtaTool
                             using (var stream = File.OpenRead(binaryFileName))
                             {
                                 byte[] md5Val = md5.ComputeHash(stream);
-                                checkSumInString = BitConverter.ToString(md5Val);
+                                checkSumInString = convert(md5Val);
                             }
                         }
                     }
-                    this.textBoxChecksum.Enabled = true;
+                    //this.textBoxChecksum.Enabled = true;
                     this.textBoxChecksum.Text = checkSumInString;
-                    this.textBoxChecksum.Enabled = false;
+                    //this.textBoxChecksum.Enabled = false;
                 }
             }
         }
