@@ -38,20 +38,21 @@
             this.labelChecksumMethod = new System.Windows.Forms.Label();
             this.lableFileSize = new System.Windows.Forms.Label();
             this.labelCheckSumValue = new System.Windows.Forms.Label();
+            this.buttonReload = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxChecksumMethod.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxPath
             // 
-            this.textBoxPath.Location = new System.Drawing.Point(203, 25);
+            this.textBoxPath.Location = new System.Drawing.Point(203, 38);
             this.textBoxPath.Name = "textBoxPath";
-            this.textBoxPath.Size = new System.Drawing.Size(561, 45);
+            this.textBoxPath.Size = new System.Drawing.Size(426, 30);
             this.textBoxPath.TabIndex = 8;
             this.textBoxPath.Text = "";
             // 
             // vScrollBar2
             // 
-            this.vScrollBar2.Location = new System.Drawing.Point(747, 73);
+            this.vScrollBar2.Location = new System.Drawing.Point(770, 76);
             this.vScrollBar2.Name = "vScrollBar2";
             this.vScrollBar2.Size = new System.Drawing.Size(17, 383);
             this.vScrollBar2.TabIndex = 10;
@@ -61,7 +62,7 @@
             this.textBoxHexaView.Enabled = false;
             this.textBoxHexaView.Location = new System.Drawing.Point(203, 76);
             this.textBoxHexaView.Name = "textBoxHexaView";
-            this.textBoxHexaView.Size = new System.Drawing.Size(541, 380);
+            this.textBoxHexaView.Size = new System.Drawing.Size(564, 380);
             this.textBoxHexaView.TabIndex = 11;
             this.textBoxHexaView.Text = "";
             // 
@@ -98,9 +99,9 @@
             // 
             // buttonBrowseFirmware
             // 
-            this.buttonBrowseFirmware.Location = new System.Drawing.Point(689, 25);
+            this.buttonBrowseFirmware.Location = new System.Drawing.Point(635, 38);
             this.buttonBrowseFirmware.Name = "buttonBrowseFirmware";
-            this.buttonBrowseFirmware.Size = new System.Drawing.Size(75, 45);
+            this.buttonBrowseFirmware.Size = new System.Drawing.Size(75, 30);
             this.buttonBrowseFirmware.TabIndex = 15;
             this.buttonBrowseFirmware.Text = "Browse file";
             this.buttonBrowseFirmware.UseVisualStyleBackColor = true;
@@ -136,11 +137,22 @@
             this.labelCheckSumValue.TabIndex = 18;
             this.labelCheckSumValue.Text = "Checksum";
             // 
+            // buttonReload
+            // 
+            this.buttonReload.Location = new System.Drawing.Point(716, 38);
+            this.buttonReload.Name = "buttonReload";
+            this.buttonReload.Size = new System.Drawing.Size(71, 30);
+            this.buttonReload.TabIndex = 19;
+            this.buttonReload.Text = "Reload";
+            this.buttonReload.UseVisualStyleBackColor = true;
+            this.buttonReload.Click += new System.EventHandler(this.buttonReload_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(837, 538);
+            this.Controls.Add(this.buttonReload);
             this.Controls.Add(this.labelCheckSumValue);
             this.Controls.Add(this.lableFileSize);
             this.Controls.Add(this.labelChecksumMethod);
@@ -153,6 +165,7 @@
             this.Controls.Add(this.textBoxPath);
             this.Name = "Form1";
             this.Text = "OTA checksum tool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onFormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxChecksumMethod.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -170,6 +183,7 @@
         private System.Windows.Forms.Label labelChecksumMethod;
         private System.Windows.Forms.Label lableFileSize;
         private System.Windows.Forms.Label labelCheckSumValue;
+        private System.Windows.Forms.Button buttonReload;
     }
 }
 

@@ -122,6 +122,7 @@ namespace OtaTool
             if (binaryFileName.Length > 0)
             {
                 this.textBoxPath.Text = binaryFileName;
+                var file_size = new System.IO.FileInfo(binaryFileName).Length;
                 //if (!binaryFileName.Contains(config.file))
                 {
                     // Get CRC
@@ -129,7 +130,52 @@ namespace OtaTool
                     string checkSumInString = "0";
                     if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "SUM") == 0)
                     {
-                        byte[] firmwareData= File.ReadAllBytes(binaryFileName);
+                        byte[] firmwareData = File.ReadAllBytes(binaryFileName);
+                        foreach (byte b in firmwareData)
+                        {
+                            checksum += b;
+                        }
+                        checkSumInString = checksum.ToString();
+                        Trace.WriteLine("File sum " + checksum);
+                    }
+                    else if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "MD5") == 0)
+                    {
+                        using (var md5 = MD5.Create())
+                        {
+                            using (var stream = File.OpenRead(binaryFileName))
+                            {
+                                byte[] md5Val = md5.ComputeHash(stream);
+                                checkSumInString = convert(md5Val);
+                            }
+                        }
+                    }
+                    //this.textBoxChecksum.Enabled = true;
+                    this.textBoxChecksum.Text = checkSumInString;
+                    this.textSize.Text = file_size.ToString();
+                    //this.textBoxChecksum.Enabled = false;
+                }
+            }
+        }
+
+        private void buttonReload_Click(object sender, EventArgs e)
+        {
+            if (binaryFileName == null)
+            {
+                binaryFileName = this.textBoxPath.Text;
+            }
+            if (binaryFileName != null
+               && binaryFileName.Length > 0)
+            {
+                this.textBoxPath.Text = binaryFileName;
+                var file_size = new System.IO.FileInfo(binaryFileName).Length;
+                //if (!binaryFileName.Contains(config.file))
+                {
+                    // Get CRC
+                    var checksum = 0;
+                    string checkSumInString = "0";
+                    if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "SUM") == 0)
+                    {
+                        byte[] firmwareData = File.ReadAllBytes(binaryFileName);
                         foreach (byte b in firmwareData)
                         {
                             checksum += b;
@@ -151,11 +197,12 @@ namespace OtaTool
                     //this.textBoxChecksum.Enabled = true;
                     this.textBoxChecksum.Text = checkSumInString;
                     //this.textBoxChecksum.Enabled = false;
+                    this.textSize.Text = file_size.ToString();
                 }
             }
         }
 
-        private void onFormClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void onFormClosing(object sender, FormClosingEventArgs e)
         {
             config.file = binaryFileName;
             config.file.Substring(config.file.LastIndexOf('\\'));
