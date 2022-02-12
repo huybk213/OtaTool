@@ -146,15 +146,18 @@ namespace OtaTool
                     this.textBoxChecksum.Enabled = true;
                     this.textBoxChecksum.Text = checkSumInString;
                     this.textBoxChecksum.Enabled = false;
-                    config.file = binaryFileName;
-                    config.file.Substring(config.file.LastIndexOf('\\'));
-                    string output = JsonSerializer.Serialize<ApplicationConfig>(config);
-
-                    File.WriteAllText(config.directory, output);
-                    // Trace.WriteLine("File directory " + config.file);
-                    Trace.WriteLine(File.ReadAllText(config.directory));
                 }
             }
+        }
+
+        private void onFormClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            config.file = binaryFileName;
+            config.file.Substring(config.file.LastIndexOf('\\'));
+            string output = JsonSerializer.Serialize<ApplicationConfig>(config);
+
+            File.WriteAllText(config.directory, output);
+            Trace.WriteLine(File.ReadAllText(config.directory));
         }
     }
 }
