@@ -171,39 +171,6 @@ namespace OtaTool
             if (binaryFileName.Length > 0)
             {
                 buttonCalculate_Click(null, null);
-                //this.textBoxPath.Text = binaryFileName;
-                //var file_size = new System.IO.FileInfo(binaryFileName).Length;
-                ////if (!binaryFileName.Contains(config.file))
-                //{
-                //    // Get CRC
-                //    var checksum = 0;
-                //    string checkSumInString = "0";
-                //    if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "SUM") == 0)
-                //    {
-                //        byte[] firmwareData = File.ReadAllBytes(binaryFileName);
-                //        foreach (byte b in firmwareData)
-                //        {
-                //            checksum += b;
-                //        }
-                //        checkSumInString = checksum.ToString();
-                //        Trace.WriteLine("File sum " + checksum);
-                //    }
-                //    else if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "MD5") == 0)
-                //    {
-                //        using (var md5 = MD5.Create())
-                //        {
-                //            using (var stream = File.OpenRead(binaryFileName))
-                //            {
-                //                byte[] md5Val = md5.ComputeHash(stream);
-                //                checkSumInString = convert(md5Val);
-                //            }
-                //        }
-                //    }
-                //    //this.textBoxChecksum.Enabled = true;
-                //    this.textBoxChecksum.Text = checkSumInString;
-                //    this.textSize.Text = file_size.ToString();
-                //    //this.textBoxChecksum.Enabled = false;
-                //}
             }
         }
 
@@ -214,7 +181,8 @@ namespace OtaTool
                 binaryFileName = this.textBoxPath.Text;
             }
             if (binaryFileName != null
-               && binaryFileName.Length > 0)
+               && binaryFileName.Length > 0
+               && File.Exists(binaryFileName))
             {
                 this.textBoxPath.Text = binaryFileName;
                 var fileSize = new System.IO.FileInfo(binaryFileName).Length;
@@ -308,6 +276,10 @@ namespace OtaTool
                     //this.textBoxChecksum.Enabled = false;
                     this.textSize.Text = fileSize.ToString();
                 }
+            }
+            else
+            {
+                AutoClosingMessageBox.Show("File not exist", "OK", 1000);
             }
         }
 
