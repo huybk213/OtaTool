@@ -54,16 +54,16 @@
             this.textBoxPath.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxPath.Location = new System.Drawing.Point(117, 18);
             this.textBoxPath.Name = "textBoxPath";
-            this.textBoxPath.Size = new System.Drawing.Size(480, 30);
+            this.textBoxPath.Size = new System.Drawing.Size(501, 30);
             this.textBoxPath.TabIndex = 8;
             this.textBoxPath.Text = "";
             // 
             // textSize
             // 
             this.textSize.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textSize.Location = new System.Drawing.Point(497, 154);
+            this.textSize.Location = new System.Drawing.Point(463, 154);
             this.textSize.Name = "textSize";
-            this.textSize.Size = new System.Drawing.Size(97, 23);
+            this.textSize.Size = new System.Drawing.Size(155, 23);
             this.textSize.TabIndex = 12;
             this.textSize.Text = "";
             // 
@@ -73,14 +73,14 @@
             this.textBoxChecksum.Location = new System.Drawing.Point(117, 58);
             this.textBoxChecksum.Name = "textBoxChecksum";
             this.textBoxChecksum.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.textBoxChecksum.Size = new System.Drawing.Size(480, 30);
+            this.textBoxChecksum.Size = new System.Drawing.Size(501, 30);
             this.textBoxChecksum.TabIndex = 13;
             this.textBoxChecksum.Text = "";
             // 
             // comboBoxChecksumMethod
             // 
             this.comboBoxChecksumMethod.EditValue = "MD5";
-            this.comboBoxChecksumMethod.Location = new System.Drawing.Point(497, 108);
+            this.comboBoxChecksumMethod.Location = new System.Drawing.Point(463, 102);
             this.comboBoxChecksumMethod.Name = "comboBoxChecksumMethod";
             this.comboBoxChecksumMethod.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxChecksumMethod.Properties.Appearance.Options.UseFont = true;
@@ -90,7 +90,7 @@
             "MD5",
             "SUM",
             "CRC32"});
-            this.comboBoxChecksumMethod.Size = new System.Drawing.Size(97, 26);
+            this.comboBoxChecksumMethod.Size = new System.Drawing.Size(155, 26);
             this.comboBoxChecksumMethod.TabIndex = 14;
             // 
             // buttonBrowseFirmware
@@ -108,7 +108,7 @@
             // 
             this.labelChecksumMethod.AutoSize = true;
             this.labelChecksumMethod.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelChecksumMethod.Location = new System.Drawing.Point(405, 109);
+            this.labelChecksumMethod.Location = new System.Drawing.Point(371, 108);
             this.labelChecksumMethod.Name = "labelChecksumMethod";
             this.labelChecksumMethod.Size = new System.Drawing.Size(61, 19);
             this.labelChecksumMethod.TabIndex = 16;
@@ -118,7 +118,7 @@
             // 
             this.lableFileSize.AutoSize = true;
             this.lableFileSize.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lableFileSize.Location = new System.Drawing.Point(405, 158);
+            this.lableFileSize.Location = new System.Drawing.Point(371, 158);
             this.lableFileSize.Name = "lableFileSize";
             this.lableFileSize.Size = new System.Drawing.Size(64, 19);
             this.lableFileSize.TabIndex = 17;
@@ -223,7 +223,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(405, 199);
+            this.label5.Location = new System.Drawing.Point(373, 199);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 19);
             this.label5.TabIndex = 27;
@@ -232,9 +232,9 @@
             // textBoxReleaseDate
             // 
             this.textBoxReleaseDate.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxReleaseDate.Location = new System.Drawing.Point(497, 195);
+            this.textBoxReleaseDate.Location = new System.Drawing.Point(463, 195);
             this.textBoxReleaseDate.Name = "textBoxReleaseDate";
-            this.textBoxReleaseDate.Size = new System.Drawing.Size(97, 23);
+            this.textBoxReleaseDate.Size = new System.Drawing.Size(155, 23);
             this.textBoxReleaseDate.TabIndex = 28;
             this.textBoxReleaseDate.Text = "";
             // 
@@ -242,7 +242,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 250);
+            this.ClientSize = new System.Drawing.Size(651, 250);
             this.Controls.Add(this.textBoxReleaseDate);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);

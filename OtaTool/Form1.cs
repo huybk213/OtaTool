@@ -180,6 +180,7 @@ namespace OtaTool
             {
                 binaryFileName = this.textBoxPath.Text;
             }
+            long otaFileSize = 0;
             if (binaryFileName != null
                && binaryFileName.Length > 0
                && File.Exists(binaryFileName))
@@ -229,7 +230,7 @@ namespace OtaTool
                     {
                         // Ota filename =  file_fw_version_hw_version.bin
                         int indexOfBinFileExtension = binaryFileName.LastIndexOf(".bin");
-                        string otaFile = binaryFileName;
+                        var otaFile = binaryFileName;
                         if (indexOfBinFileExtension > 0)
                         {
                             otaFile = binaryFileName.Remove(indexOfBinFileExtension);
@@ -243,7 +244,7 @@ namespace OtaTool
                         using (var fileStream = new FileStream(otaFile, FileMode.Append, FileAccess.Write, FileShare.None))
                         using (var bw = new BinaryWriter(fileStream))
                         {
-                            // 3 bytes header + 3 bytes firnware + 3 bytes hardware + 4 bytes size + 1 byte release year + 1 date + 1 month
+                            // 3 bytes header + 3 bytes firmware + 3 bytes hardware + 4 bytes size + 1 byte release year + 1 date + 1 month
                             byte[] headerBytes = Encoding.ASCII.GetBytes(this.textBoxHeader.Text);
                             byte[] firmwareVersionBytes = Encoding.ASCII.GetBytes(this.textBoxFirmwareVersion.Text);
                             byte[] hardwareVersionBytes = Encoding.ASCII.GetBytes(this.textBoxHardwareVersion.Text);
@@ -268,13 +269,13 @@ namespace OtaTool
                                                         + "/" + DateTime.Now.Day.ToString();
                             this.textBoxReleaseDate.Enabled = false;
                         }
+                        otaFileSize = new System.IO.FileInfo(otaFile).Length;
                         AutoClosingMessageBox.Show("Success", "OK", 1000);
                     }
 
                     //this.textBoxChecksum.Enabled = true;
                     this.textBoxChecksum.Text = checkSumInString;
-                    //this.textBoxChecksum.Enabled = false;
-                    this.textSize.Text = fileSize.ToString();
+                    this.textSize.Text = fileSize.ToString() + "/" + otaFileSize.ToString();
                 }
             }
             else
