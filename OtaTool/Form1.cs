@@ -26,6 +26,8 @@ namespace OtaTool
 
             public string hardwareVersion { get; set; }
             public string header { get; set; }
+
+            public string method { get; set; }
         }
 
         ApplicationConfig config = new ApplicationConfig();
@@ -115,6 +117,17 @@ namespace OtaTool
                             config.header = header;
                             this.textBoxHeader.Text = header;
                         }
+
+                        if (jsonConfig.ContainsKey("method"))
+                        {
+                            string method;
+                            jsonConfig.TryGetValue("method", out method);
+                            if (method != null)
+                            {
+                                config.method = method;
+                                this.comboBoxChecksumMethod.Text = method;
+                            }
+                        }
                     }
                     else
                     {
@@ -194,9 +207,9 @@ namespace OtaTool
                     string checkSumInString = "0";
                     byte[] firmwareData = File.ReadAllBytes(binaryFileName);
                     byte[] checksumInBytes;
+                    
                     if (String.Compare(this.comboBoxChecksumMethod.Text.ToString(), "SUM") == 0)
                     {
-                        
                         foreach (byte b in firmwareData)
                         {
                             checksum += b;
@@ -294,6 +307,7 @@ namespace OtaTool
                 {
                     config.file.Substring(config.file.LastIndexOf('\\'));
                 }
+
                 if (config.file != null)
                 {
                     if (this.textBoxHardwareVersion.Text.Length == 3)
@@ -305,6 +319,8 @@ namespace OtaTool
                     {
                         config.header = this.textBoxHeader.Text;
                     }
+
+                    config.method = this.comboBoxChecksumMethod.Text;
 
                     string output = JsonSerializer.Serialize<ApplicationConfig>(config);
 
@@ -412,6 +428,26 @@ namespace OtaTool
                 this.textBoxHeader.SelectionStart = this.textBoxHeader.Text.Length;
                 this.textBoxHeader.SelectionLength = 0;
                 textBoxHeaderBusy = false;
+            }
+        }
+
+        private void buttonShowFile_Click(object sender, EventArgs e)
+        {
+            string url = this.textBoxPath.Text;
+            if (url.Contains("\\"))
+            {
+                url = url.Substring(0, url.LastIndexOf("\\"));
+            }
+            if (url != null && url.Length > 0)
+            {
+                try
+                {
+                    Process.Start("explorer.exe", @url);
+                }
+                catch 
+                {
+                    
+                }
             }
         }
     }

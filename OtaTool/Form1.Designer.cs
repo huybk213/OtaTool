@@ -35,7 +35,6 @@
             this.buttonBrowseFirmware = new System.Windows.Forms.Button();
             this.labelChecksumMethod = new System.Windows.Forms.Label();
             this.lableFileSize = new System.Windows.Forms.Label();
-            this.labelCheckSumValue = new System.Windows.Forms.Label();
             this.buttonReload = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,6 +45,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxReleaseDate = new System.Windows.Forms.RichTextBox();
+            this.buttonShowFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxChecksumMethod.Properties)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,26 +54,26 @@
             this.textBoxPath.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxPath.Location = new System.Drawing.Point(117, 18);
             this.textBoxPath.Name = "textBoxPath";
-            this.textBoxPath.Size = new System.Drawing.Size(501, 30);
+            this.textBoxPath.Size = new System.Drawing.Size(517, 61);
             this.textBoxPath.TabIndex = 8;
             this.textBoxPath.Text = "";
             // 
             // textSize
             // 
-            this.textSize.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textSize.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textSize.Location = new System.Drawing.Point(463, 154);
             this.textSize.Name = "textSize";
-            this.textSize.Size = new System.Drawing.Size(155, 23);
+            this.textSize.Size = new System.Drawing.Size(171, 23);
             this.textSize.TabIndex = 12;
             this.textSize.Text = "";
             // 
             // textBoxChecksum
             // 
-            this.textBoxChecksum.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBoxChecksum.Location = new System.Drawing.Point(117, 58);
+            this.textBoxChecksum.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxChecksum.Location = new System.Drawing.Point(537, 101);
             this.textBoxChecksum.Name = "textBoxChecksum";
             this.textBoxChecksum.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.textBoxChecksum.Size = new System.Drawing.Size(501, 30);
+            this.textBoxChecksum.Size = new System.Drawing.Size(97, 26);
             this.textBoxChecksum.TabIndex = 13;
             this.textBoxChecksum.Text = "";
             // 
@@ -90,15 +90,15 @@
             "MD5",
             "SUM",
             "CRC32"});
-            this.comboBoxChecksumMethod.Size = new System.Drawing.Size(155, 26);
+            this.comboBoxChecksumMethod.Size = new System.Drawing.Size(68, 26);
             this.comboBoxChecksumMethod.TabIndex = 14;
             // 
             // buttonBrowseFirmware
             // 
             this.buttonBrowseFirmware.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonBrowseFirmware.Location = new System.Drawing.Point(23, 109);
+            this.buttonBrowseFirmware.Location = new System.Drawing.Point(23, 101);
             this.buttonBrowseFirmware.Name = "buttonBrowseFirmware";
-            this.buttonBrowseFirmware.Size = new System.Drawing.Size(94, 49);
+            this.buttonBrowseFirmware.Size = new System.Drawing.Size(94, 33);
             this.buttonBrowseFirmware.TabIndex = 15;
             this.buttonBrowseFirmware.Text = "Browse file";
             this.buttonBrowseFirmware.UseVisualStyleBackColor = true;
@@ -124,22 +124,12 @@
             this.lableFileSize.TabIndex = 17;
             this.lableFileSize.Text = "File size";
             // 
-            // labelCheckSumValue
-            // 
-            this.labelCheckSumValue.AutoSize = true;
-            this.labelCheckSumValue.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelCheckSumValue.Location = new System.Drawing.Point(23, 69);
-            this.labelCheckSumValue.Name = "labelCheckSumValue";
-            this.labelCheckSumValue.Size = new System.Drawing.Size(81, 19);
-            this.labelCheckSumValue.TabIndex = 18;
-            this.labelCheckSumValue.Text = "Checksum";
-            // 
             // buttonReload
             // 
             this.buttonReload.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonReload.Location = new System.Drawing.Point(23, 180);
+            this.buttonReload.Location = new System.Drawing.Point(23, 144);
             this.buttonReload.Name = "buttonReload";
-            this.buttonReload.Size = new System.Drawing.Size(94, 49);
+            this.buttonReload.Size = new System.Drawing.Size(94, 33);
             this.buttonReload.TabIndex = 19;
             this.buttonReload.Text = "Calculate";
             this.buttonReload.UseVisualStyleBackColor = true;
@@ -180,7 +170,7 @@
             // 
             // textBoxFirmwareVersion
             // 
-            this.textBoxFirmwareVersion.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxFirmwareVersion.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxFirmwareVersion.Location = new System.Drawing.Point(283, 105);
             this.textBoxFirmwareVersion.Name = "textBoxFirmwareVersion";
             this.textBoxFirmwareVersion.Size = new System.Drawing.Size(70, 23);
@@ -190,7 +180,7 @@
             // 
             // textBoxHardwareVersion
             // 
-            this.textBoxHardwareVersion.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxHardwareVersion.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxHardwareVersion.Location = new System.Drawing.Point(283, 154);
             this.textBoxHardwareVersion.Name = "textBoxHardwareVersion";
             this.textBoxHardwareVersion.Size = new System.Drawing.Size(70, 23);
@@ -200,7 +190,7 @@
             // 
             // textBoxHeader
             // 
-            this.textBoxHeader.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxHeader.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxHeader.Location = new System.Drawing.Point(283, 195);
             this.textBoxHeader.Name = "textBoxHeader";
             this.textBoxHeader.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
@@ -213,7 +203,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(23, 29);
+            this.label4.Location = new System.Drawing.Point(23, 18);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 19);
             this.label4.TabIndex = 26;
@@ -231,18 +221,30 @@
             // 
             // textBoxReleaseDate
             // 
-            this.textBoxReleaseDate.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textBoxReleaseDate.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textBoxReleaseDate.Location = new System.Drawing.Point(463, 195);
             this.textBoxReleaseDate.Name = "textBoxReleaseDate";
-            this.textBoxReleaseDate.Size = new System.Drawing.Size(155, 23);
+            this.textBoxReleaseDate.Size = new System.Drawing.Size(171, 23);
             this.textBoxReleaseDate.TabIndex = 28;
             this.textBoxReleaseDate.Text = "";
+            // 
+            // buttonShowFile
+            // 
+            this.buttonShowFile.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.buttonShowFile.Location = new System.Drawing.Point(23, 191);
+            this.buttonShowFile.Name = "buttonShowFile";
+            this.buttonShowFile.Size = new System.Drawing.Size(94, 33);
+            this.buttonShowFile.TabIndex = 29;
+            this.buttonShowFile.Text = "Show file";
+            this.buttonShowFile.UseVisualStyleBackColor = true;
+            this.buttonShowFile.Click += new System.EventHandler(this.buttonShowFile_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(651, 250);
+            this.ClientSize = new System.Drawing.Size(655, 251);
+            this.Controls.Add(this.buttonShowFile);
             this.Controls.Add(this.textBoxReleaseDate);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -253,7 +255,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonReload);
-            this.Controls.Add(this.labelCheckSumValue);
             this.Controls.Add(this.lableFileSize);
             this.Controls.Add(this.labelChecksumMethod);
             this.Controls.Add(this.buttonBrowseFirmware);
@@ -280,7 +281,6 @@
         private System.Windows.Forms.Button buttonBrowseFirmware;
         private System.Windows.Forms.Label labelChecksumMethod;
         private System.Windows.Forms.Label lableFileSize;
-        private System.Windows.Forms.Label labelCheckSumValue;
         private System.Windows.Forms.Button buttonReload;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -291,6 +291,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox textBoxReleaseDate;
+        private System.Windows.Forms.Button buttonShowFile;
     }
 }
 
