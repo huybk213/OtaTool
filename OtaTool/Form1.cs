@@ -238,6 +238,8 @@ namespace OtaTool
                         || this.textBoxHeader.Text.Length != 3)
                     {
                         AutoClosingMessageBox.Show("Invalid format(001) (001) (EXP)", "OK", 2000);
+                        this.textBoxChecksum.BackColor = Color.Red;
+                        this.textSize.BackColor = Color.Red;
                     }
                     else
                     {
@@ -283,6 +285,8 @@ namespace OtaTool
                             this.textBoxReleaseDate.Enabled = false;
                         }
                         otaFileSize = new System.IO.FileInfo(otaFile).Length;
+                        this.textBoxChecksum.BackColor = Color.Green;
+                        this.textSize.BackColor = Color.Green;
                         AutoClosingMessageBox.Show("Success", "OK", 1000);
                     }
 
