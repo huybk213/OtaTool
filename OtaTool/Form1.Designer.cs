@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textBoxPath = new System.Windows.Forms.RichTextBox();
             this.textSize = new System.Windows.Forms.RichTextBox();
             this.textBoxChecksum = new System.Windows.Forms.RichTextBox();
@@ -46,6 +47,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxReleaseDate = new System.Windows.Forms.RichTextBox();
             this.buttonShowFile = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxChecksumMethod.Properties)).BeginInit();
             this.SuspendLayout();
             // 
@@ -239,6 +241,14 @@
             this.buttonShowFile.UseVisualStyleBackColor = true;
             this.buttonShowFile.Click += new System.EventHandler(this.buttonShowFile_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Location = new System.Drawing.Point(12, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(631, 239);
+            this.groupBox1.TabIndex = 30;
+            this.groupBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,6 +272,8 @@
             this.Controls.Add(this.textBoxChecksum);
             this.Controls.Add(this.textSize);
             this.Controls.Add(this.textBoxPath);
+            this.Controls.Add(this.groupBox1);
+            this.IconOptions.Icon = ((System.Drawing.Icon)(resources.GetObject("Form1.IconOptions.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
@@ -292,6 +304,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox textBoxReleaseDate;
         private System.Windows.Forms.Button buttonShowFile;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
