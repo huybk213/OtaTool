@@ -10,14 +10,13 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Security.Cryptography;
+using MinProtocol;
 
 namespace OtaTool
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
     {
-        //string config.file;
         string binaryFileName;
-        //string lastPath = Directory.GetCurrentDirectory();
 
         public class ApplicationConfig
         {
@@ -42,6 +41,17 @@ namespace OtaTool
             InitializeComponent();
             config.directory = Directory.GetCurrentDirectory();
             loadDefaultDirectory();
+
+            // Test min protocol
+            byte[] test = Encoding.ASCII.GetBytes("1234");
+            minFrame frame = new minFrame();
+            frame.id = 1;
+            frame.size = 4;
+            frame.payload = test;
+            MinProtocol.Min min = new MinProtocol.Min();
+            min.min_send_frame(frame);
+            byte[] test2 = { 0xAA, 0xAA, 0xAA, 0x01, 0x04, 0x31, 0x32, 0x33, 0x34, 0x35, 0xB9, 0xEB, 0x79, 0x55 };
+            min.min_rx_feed(test2);
         }
 
         public class AutoClosingMessageBox
