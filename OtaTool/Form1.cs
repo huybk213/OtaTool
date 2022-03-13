@@ -31,6 +31,18 @@ namespace OtaTool
 
         ApplicationConfig config = new ApplicationConfig();
 
+        public void validFrameReceived(ref minFrame frame)
+        {
+            return;
+        }
+
+        public void serialSendByte(byte data)
+        {
+            System.Diagnostics.Debug.Write(data.ToString("X") + " ");
+            return;
+        }
+
+
         public Form1()
         {
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
@@ -49,9 +61,11 @@ namespace OtaTool
             frame.size = 4;
             frame.payload = test;
             MinProtocol.Min min = new MinProtocol.Min();
-            min.min_send_frame(frame);
+            min.rxCallback = validFrameReceived;
+            min.txByteCallback = serialSendByte;
+            min.minSendFrame(frame);
             byte[] test2 = { 0xAA, 0xAA, 0xAA, 0x01, 0x04, 0x31, 0x32, 0x33, 0x34, 0x35, 0xB9, 0xEB, 0x79, 0x55 };
-            min.min_rx_feed(test2);
+            min.minRxFeed(test2);
         }
 
         public class AutoClosingMessageBox

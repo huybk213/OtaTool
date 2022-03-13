@@ -51,13 +51,16 @@ namespace MinProtocol
         public byte rx_frame_length = 0;            // Length of frame
         public byte rx_control = 0;                 // Control byte
         public byte tx_header_byte_countdown = 0;   // Count out the header bytes
-
-        public byte min_get_id(byte id_control)
+        public delegate void onMinDataCallback(ref minFrame frame);
+        public delegate void onMinTxByteCallback(byte data);
+        public onMinDataCallback rxCallback;
+        public onMinTxByteCallback txByteCallback;
+        private byte minGetFrameId(byte id_control)
         {
             return (byte)(id_control & 0x3F);
         }
 
-        public int on_wire_size(int len)
+        public int onWireSize(int len)
         {
             // Number of bytes needed for a frame with a given payload length, excluding stuff bytes
             // 3 header bytes, ID/control byte, length byte, seq byte, 4 byte CRC, EOF byte
@@ -65,12 +68,12 @@ namespace MinProtocol
             return (len + 11);
         }
 
-        public void crc32_init_context(ref UInt32 crc)
+        public void crc32InitContext(ref UInt32 crc)
         {
             crc = 0xFFFFFFFFU;
         }
 
-        private void crc32_step(ref UInt32 crc, byte data)
+        private void crc32Step(ref UInt32 crc, byte data)
         {
             UInt32 val = 1;
             crc ^= data;
@@ -81,12 +84,12 @@ namespace MinProtocol
             }
         }
 
-        private UInt32 crc32_finalize(UInt32 crc)
+        private UInt32 crc32Finalize(UInt32 crc)
         {
             return ~crc;
         }
 
-        private void min_rx_byte(byte data)
+        private void minRxByte(byte data)
         {
             // Regardless of state, three header bytes means "start of frame" and
             // should reset the frame buffer and be ready to receive frame data
@@ -131,8 +134,8 @@ namespace MinProtocol
                 case minState.RECEIVING_ID_CONTROL:
                     this.rx_frame_id_control = data;
                     this.rx_frame_bytes_count = 0;
-                    crc32_init_context(ref this.rx_checksum);
-                    crc32_step(ref this.rx_checksum, data);
+                    crc32InitContext(ref this.rx_checksum);
+                    crc32Step(ref this.rx_checksum, data);
                     if ((data & 0x80) != 0)
                     {
                         this.rx_frame_state = minState.SEARCHING_FOR_SOF;
@@ -145,13 +148,13 @@ namespace MinProtocol
                     break;
                 case minState.RECEIVING_SEQ:
                     this.rx_frame_seq = data;
-                    crc32_step(ref this.rx_checksum, data);
+                    crc32Step(ref this.rx_checksum, data);
                     this.rx_frame_state = minState.RECEIVING_LENGTH;
                     break;
                 case minState.RECEIVING_LENGTH:
                     this.rx_frame_length = data;
                     this.rx_control = data;
-                    crc32_step(ref this.rx_checksum, data);
+                    crc32Step(ref this.rx_checksum, data);
                     if (this.rx_frame_length > 0)
                     {
                         // Can reduce the RAM size by compiling limits to frame sizes
@@ -172,7 +175,7 @@ namespace MinProtocol
                     break;
                 case minState.RECEIVING_PAYLOAD:
                     this.rx_frame_payload_buf[this.rx_frame_bytes_count++] = data;
-                    crc32_step(ref this.rx_checksum, data);
+                    crc32Step(ref this.rx_checksum, data);
                     if (--this.rx_frame_length == 0)
                     {
                         this.rx_frame_state = minState.RECEIVING_CHECKSUM_3;
@@ -192,7 +195,7 @@ namespace MinProtocol
                     break;
                 case minState.RECEIVING_CHECKSUM_0:
                     this.rx_frame_checksum |= data;
-                    crc = crc32_finalize(this.rx_checksum);
+                    crc = crc32Finalize(this.rx_checksum);
                     if (this.rx_frame_checksum != crc)
                     {
                         // Frame fails the checksum and so is dropped
@@ -210,7 +213,11 @@ namespace MinProtocol
                         // Frame received OK, pass up data to handler
                         // valid_frame_received(self);
                         System.Diagnostics.Debug.WriteLine("\r\nValid frame received");
-
+                        minFrame rxFrame;
+                        rxFrame.size = this.rx_control;
+                        rxFrame.id = minGetFrameId(this.rx_frame_id_control);
+                        rxFrame.payload = this.rx_frame_payload_buf;
+                        this.rxCallback(ref rxFrame);
                     }
                     // else discard
                     // Look for next frame */
@@ -222,26 +229,26 @@ namespace MinProtocol
                     break;
             }
         }
-        public void min_rx_feed(byte[] serialData)
+        public void minRxFeed(byte[] serialData)
         {
             foreach (byte b in serialData)
             {
-                min_rx_byte(b);
+                minRxByte(b);
             }
         }
 
-        private void stuffed_tx_byte(byte data)
+        private void stuffedTxByte(byte data)
         {
             // Transmit the byte
-            min_tx_byte(data);
-            crc32_step(ref this.tx_checksum, data);
+            minSendTxByte(data);
+            crc32Step(ref this.tx_checksum, data);
 
             // See if an additional stuff byte is needed
             if (data == (byte)minSpecialByte.HEADER_BYTE)
             {
                 if (--this.tx_header_byte_countdown == 0)
                 {
-                    min_tx_byte((byte)minSpecialByte.STUFF_BYTE); // Stuff byte
+                    minSendTxByte((byte)minSpecialByte.STUFF_BYTE); // Stuff byte
                     this.tx_header_byte_countdown = 2;
                 }
             }
@@ -251,19 +258,20 @@ namespace MinProtocol
             }
         }
 
-        private UInt32 min_tx_space()
+        private UInt32 minGetTxSpace()
         {
             return 0xFF;
         }
 
-        private void min_tx_byte(byte data)
+        private void minSendTxByte(byte data)
         {
             // self->callback->tx_byte(self, data);
             // Trace.Write("Exiting Main");
-            System.Diagnostics.Debug.Write(data.ToString("X") + " ");
+            // System.Diagnostics.Debug.Write(data.ToString("X") + " ");
+            txByteCallback(data);
         }
 
-        private void on_wire_bytes(byte id_control,
+        private void onWireBytes(byte id_control,
                                     byte seq,
                                     ref byte[] payload_base,
                                     UInt16 payload_offset,
@@ -274,52 +282,52 @@ namespace MinProtocol
             UInt32 checksum;
 
             this.tx_header_byte_countdown = 2;
-            crc32_init_context(ref this.tx_checksum);
+            crc32InitContext(ref this.tx_checksum);
 
 
             // Header is 3 bytes; because unstuffed will reset receiver immediately
-            min_tx_byte((byte)minSpecialByte.HEADER_BYTE);
-            min_tx_byte((byte)minSpecialByte.HEADER_BYTE);
-            min_tx_byte((byte)minSpecialByte.HEADER_BYTE);
+            minSendTxByte((byte)minSpecialByte.HEADER_BYTE);
+            minSendTxByte((byte)minSpecialByte.HEADER_BYTE);
+            minSendTxByte((byte)minSpecialByte.HEADER_BYTE);
 
-            stuffed_tx_byte(id_control);
+            stuffedTxByte(id_control);
             if ((id_control & 0x80) != 0)
             {
                 // Send the sequence number if it is a transport frame
-                stuffed_tx_byte(seq);
+                stuffedTxByte(seq);
             }
 
-            stuffed_tx_byte(payload_len);
+            stuffedTxByte(payload_len);
 
             for (i = 0, n = payload_len; n > 0; n--, i++)
             {
-                stuffed_tx_byte(payload_base[payload_offset]);
+                stuffedTxByte(payload_base[payload_offset]);
                 payload_offset++;
                 payload_offset &= payload_mask;
             }
 
-            checksum = crc32_finalize(this.tx_checksum);
+            checksum = crc32Finalize(this.tx_checksum);
 
             // Network order is big-endian. A decent C compiler will spot that this
             // is extracting bytes and will use efficient instructions.
-            stuffed_tx_byte((byte)((checksum >> 24) & 0xFFU));
-            stuffed_tx_byte((byte)((checksum >> 16) & 0xFFU));
-            stuffed_tx_byte((byte)((checksum >> 8) & 0xFFU));
-            stuffed_tx_byte((byte)((checksum >> 0) & 0xFFU));
+            stuffedTxByte((byte)((checksum >> 24) & 0xFFU));
+            stuffedTxByte((byte)((checksum >> 16) & 0xFFU));
+            stuffedTxByte((byte)((checksum >> 8) & 0xFFU));
+            stuffedTxByte((byte)((checksum >> 0) & 0xFFU));
 
             // Ensure end-of-frame doesn't contain 0xaa and confuse search for start-of-frame
-            min_tx_byte((byte)minSpecialByte.EOF_BYTE);
+            minSendTxByte((byte)minSpecialByte.EOF_BYTE);
 
 
             // this.tx_frame_bytes_count = 0;
         }
 
         // Sends an application MIN frame on the wire (do not put into the transport queue)
-        public void min_send_frame(minFrame msg)
+        public void minSendFrame(minFrame msg)
         {
-            if ((on_wire_size((int)msg.size) <= (int)min_tx_space()))
+            if ((onWireSize((int)msg.size) <= (int)minGetTxSpace()))
             {
-                on_wire_bytes(min_get_id((byte)msg.id), 0, ref msg.payload, 0, 0xFFFF, (byte)(msg.size & 0xFF));
+                onWireBytes(minGetFrameId((byte)msg.id), 0, ref msg.payload, 0, 0xFFFF, (byte)(msg.size & 0xFF));
             }
         }
     }
